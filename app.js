@@ -1,11 +1,14 @@
 const gameContainer = document.querySelector(".game-container");
 const snake = document.querySelector(".snake");
 const apple = document.querySelector(".apple");
+const startButton = document.querySelector(".game-button");
 
 let snakeX = 0; //  Position X du serpent
 let snakeY = 0; //   Position Y du serpent
 let appleX = 0;
 let appleY = 0;
+let gameRunning = false;
+
 
 // fonction pour définir la position actuel de mon serpent
 function showSnake() {
@@ -26,8 +29,7 @@ function showApple() {
   apple.style.top = appleY + "px";
 }
 
-showSnake();
-showApple();
+
 
 // Mouvement du serpent
 
@@ -70,15 +72,20 @@ document.addEventListener("keydown", (e) => {
 
 // setInterval est utilise pour appeler la fonction en continue toutes 
 // les millisecondes
-const gameInterval = setInterval(moveSnake, 200);
+let gameInterval = setInterval(moveSnake, 200);
 
 
 // Gérer les collisions avec la pomme et le serpent
 
 function snakeCrash() {
+
+  if (!gameRunning) {
+    return;
+  }
     // colision zone de jeu
     if ( snakeX < 0 || snakeX >= 300 || snakeY < 0 || snakeY >= 300) {
         clearInterval(gameInterval); // Game Over
+        gameRunning = false;
         alert("Game Over, t'es claqué mon chef");
     }
 //---------------------------------------------------------
@@ -91,4 +98,18 @@ function snakeCrash() {
         //-------------------------------------------------------------
     }
 }
+
+function startGame() {
+  if (!gameRunning) {
+  snakeX = 0;
+  snakeY = 0;
+  showSnake();
+  showApple();
+  move = "right";
+  gameInterval = setInterval(moveSnake, 200);
+  gameRunning = true;
+}
+}
+
+startButton.addEventListener("click", startGame);
 
